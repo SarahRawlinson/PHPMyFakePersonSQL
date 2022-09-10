@@ -1,0 +1,10 @@
+CREATE TABLE `my_projects`.`languages`
+(
+    `id` INT NOT NULL AUTO_INCREMENT ,
+    `language` VARCHAR(50) NOT NULL ,
+    PRIMARY KEY (`id`)
+)
+ENGINE = InnoDB;
+
+ALTER TABLE languages
+ADD CONSTRAINT language_unique UNIQUE(language);

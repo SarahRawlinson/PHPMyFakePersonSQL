@@ -1,0 +1,8 @@
+CREATE TABLE my_projects.features
+(
+    id INT NOT NULL AUTO_INCREMENT ,
+    feature VARCHAR(100) NOT NULL ,
+    PRIMARY KEY (id),
+    UNIQUE (feature)
+)
+ENGINE = InnoDB;

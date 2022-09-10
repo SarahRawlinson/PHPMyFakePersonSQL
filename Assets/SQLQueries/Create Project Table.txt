@@ -1,0 +1,14 @@
+CREATE TABLE `my_projects`.`project`
+(
+    `id` INT NOT NULL AUTO_INCREMENT ,
+    `project_name` VARCHAR(50) NOT NULL ,
+    `git_directory` VARCHAR(150) NULL ,
+    `details` VARCHAR(300) NULL ,
+    `key_words` VARCHAR(300) NULL ,
+    PRIMARY KEY (`id`)
+)
+ENGINE = InnoDB;
+
+ALTER TABLE project
+add CONSTRAINT directory_unique UNIQUE (git_directory),
+add CONSTRAINT details_unique UNIQUE (details);
