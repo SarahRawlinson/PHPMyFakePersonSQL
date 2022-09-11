@@ -16,6 +16,30 @@ include "CSVReader.php";
 
 class MyFakeInfo
 {
+    
+    private static array $emailDomains;
+    private static int $countOfEmailDomains;
+    private static int $countOfEmailTLDs;
+    private static int $countOfFemaleNames;
+    private static int $countOfMaleNames;
+    private static int $countOfLastNames;
+    private static int $countOfLocations;
+    private static ?array $emailEmailTLDs;
+    private static array $femaleNames;
+    private static array $maleNames;
+    private static array $lastNames;
+    private static array $locations;
+    private static ?array $postcodeSectors;
+    private static ?array $postCodeUnits;
+    private static int $countOfPostCodeUnits;
+    /**
+     * @var array[]|null
+     */
+    private static ?array $Animals;
+    private static int $countOfAnimals;
+    private static ?array $Adjectives;
+    private static int $countOfAdjectives;
+
     /**
      * @return string
      * string
@@ -23,9 +47,10 @@ class MyFakeInfo
      */
     public static Function GetEmailDomain() : string
     {
-        $domains = CSVReader::GetEmailDomains();
-        $TLDs = CSVReader::GetEmailTLDs();
-        return "@".$domains[rand(0, count($domains) - 1)].$TLDs[rand(0, count($TLDs) - 1)];
+        $emailDomains = self::$emailDomains ?? self::GetEmailDomains();
+        $emailEmailTLDs = self::$emailEmailTLDs ?? self::GetEmailTLDs();
+        return "@".$emailDomains[rand(0, self::$countOfEmailDomains)].
+            $emailEmailTLDs[rand(0, self::$countOfEmailTLDs)];
     }
 
     /**
@@ -55,8 +80,8 @@ class MyFakeInfo
      */
     public static Function GetFemaleName() : string
     {
-        $femaleNames = ReadTextFiles::GetFemaleNames();
-        return $femaleNames[rand(0, count($femaleNames) - 1)];
+        $femaleNames = self::$femaleNames ?? self::GetFemaleNames();
+        return $femaleNames[rand(0, self::$countOfFemaleNames)];
     }
 
     /**
@@ -66,8 +91,8 @@ class MyFakeInfo
      */
     public static function GetMaleName() : string
     {
-        $maleNames = ReadTextFiles::GetMaleNames();
-        return $maleNames[rand(0, count($maleNames) - 1)];
+        $maleNames = self::$maleNames ?? self::GetMaleNames();
+        return $maleNames[rand(0, self::$countOfMaleNames)];
     }
 
     /**
@@ -77,8 +102,8 @@ class MyFakeInfo
      */
     public static function GetLastName() : string
     {
-        $lastNames = ReadTextFiles::GetLastNames();
-        return $lastNames[rand(0, count($lastNames) - 1)];
+        $lastNames = self::$lastNames ?? self::GetLastNames();
+        return $lastNames[rand(0, self::$countOfLastNames)];
     }
 
 
@@ -114,9 +139,9 @@ class MyFakeInfo
      */
     public static function GetRandomLocation() : array
     {
-        $locations = CSVReader::GetLocations();
-        $location = $locations[rand(1, count($locations) - 1)];
-        $sectors = CSVReader::GetPostcodeSectors();
+        $locations = self::$locations ?? self::GetLocations();
+        $location = $locations[rand(1, self::$countOfLocations)];
+        $sectors = self::$postcodeSectors ?? self::GetPostcodeSectors();
         try {
             $postcode = $location['postcode'];            
             $sectors = array_values(preg_grep("/^$postcode/i",$sectors));            
@@ -125,11 +150,10 @@ class MyFakeInfo
         {
             echo $e;
         }        
-        $units = CSVReader::GetPostcodeUnits();        
+        $units = self::$postCodeUnits ?? self::GetPostcodeUnits();        
         $sector = $sectors[rand(0, count($sectors) - 1)];
-        $unit = $units[rand(0, count($units) - 1)];
-        $location['postcode'] = $sector.$unit;
-        
+        $unit = $units[rand(0, self::$countOfPostCodeUnits)];
+        $location['postcode'] = $sector.$unit;        
         return $location;
     }
 
@@ -141,8 +165,8 @@ class MyFakeInfo
      */
     public static function GetRandomAnimal() : string
     {
-        $animals = CSVReader::GetAnimals();
-        $i = rand(1, count($animals) - 1);
+        $animals = $animals ?? self::GetAnimals();
+        $i = rand(1, self::$countOfAnimals);
         $animal = $animals[$i];
         return $animal['animal_name'];        
     }
@@ -153,11 +177,119 @@ class MyFakeInfo
      */
     public static function GetRandomAdjective(): string
     {
-        $Adjectives = CSVReader::GetAdjectives();
-        return $Adjectives[rand(0, count($Adjectives) - 1)];
+        $Adjectives = self::$Adjectives ?? self::GetAdjectives();
+        return $Adjectives[rand(0, self::$countOfAdjectives)];
+    }
+    
+    //static get functions static 
+
+    /**
+     * @return array|null
+     */
+    public static function GetAdjectives(): ?array
+    {
+        $array = CSVReader::GetAdjectives();
+        self::$Adjectives = $array;
+        self::$countOfAdjectives = count($array) - 1;
+        return $array;
+    }
+
+    /**
+     * @return array|null
+     */
+    public static function GetAnimals(): ?array
+    {
+        $array = CSVReader::GetAnimals();
+        self::$Animals = $array;
+        self::$countOfAnimals = count($array) - 1;
+        return $array;
+    }
+    
+    /**
+     * @return array|null
+     */
+    public static function GetPostcodeUnits(): ?array
+    {
+        $array = CSVReader::GetPostcodeUnits();
+        self::$postCodeUnits = $array;
+        self::$countOfPostCodeUnits = count($array) - 1;
+        return $array;
+    }
+
+    /**
+     * @return array|null
+     */
+    public static function GetPostcodeSectors(): ?array
+    {
+        $array = CSVReader::GetPostcodeSectors();
+        self::$postcodeSectors = $array;
+        return $array;
+    }    
+
+    /**
+     * @return array|null
+     */
+    public static function GetEmailDomains(): ?array
+    {
+        $array = CSVReader::GetEmailDomains();
+        self::$emailDomains = $array;
+        self::$countOfEmailDomains = count($array) - 1;
+        return $array;
+    }
+
+    /**
+     * @return array|null
+     */
+    public static function GetFemaleNames(): ?array
+    {
+        $array = ReadTextFiles::GetFemaleNames();
+        self::$femaleNames = $array;
+        self::$countOfFemaleNames = count($array) - 1;
+        return $array;
+    }
+
+    /**
+     * @return array|null
+     */
+    public static function GetMaleNames(): ?array
+    {
+        $array = ReadTextFiles::GetMaleNames();
+        self::$maleNames = $array;
+        self::$countOfMaleNames = count($array) - 1;
+        return $array;
+    }
+
+    /**
+     * @return array|null
+     */
+    public static function GetLastNames(): ?array
+    {
+        $array = ReadTextFiles::GetLastNames();
+        self::$lastNames = $array;
+        self::$countOfLastNames = count($array) - 1;
+        return $array;
+    }
+
+    /**
+     * @return array|null
+     */
+    public static function GetLocations(): ?array
+    {
+        $array = CSVReader::GetLocations();
+        self::$locations = $array;
+        self::$countOfLocations = count($array) - 1;
+        return $array;
+    }
+
+    /**
+     * @return array|null
+     */
+    public static function GetEmailTLDs(): ?array
+    {
+        $array = CSVReader::GetEmailTLDs();
+        self::$emailEmailTLDs = $array;
+        self::$countOfEmailTLDs = count($array) - 1;
+        return $array;
     }
 
 }
-
-//echo "\n\n";
-//echo print_r(MyFakeInfo::GetRandomLocation());

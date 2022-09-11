@@ -23,7 +23,7 @@ function time_elapsed()
 $dbConnect = DatabaseConnection::GetInstance();
 time_elapsed();
 $rows = [];
-for ($i = 0; $i < 1000; $i++) 
+for ($i = 0; $i < 10000; $i++) 
 {
 //0 male, 1 female
     

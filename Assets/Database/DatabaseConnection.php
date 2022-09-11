@@ -20,19 +20,6 @@ class DatabaseConnection
     }
 
 
-//$array = array("array", "with", "about", "2000", "values");
-//$query = "INSERT INTO table (link) VALUES (?)";
-//$stmt = $mysqli->prepare($query);
-//$stmt ->bind_param("s", $one);
-//
-//$mysqli->query("START TRANSACTION");
-//foreach ($array as $one) {
-//$stmt->execute();
-//}
-//$stmt->close();
-//$mysqli->query("COMMIT");   
-
-
     public function AddComments(array $data)
     {
         $this->Open();
