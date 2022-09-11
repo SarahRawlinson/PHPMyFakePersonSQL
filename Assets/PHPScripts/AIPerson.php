@@ -20,41 +20,127 @@ class AIPerson implements IPerson
         $this->faker = $faker;
         $b_gender = rand(0, 1);
         $sex = $b_gender == 1 ? 'female' : 'male';
-        //$company = $faker->company();
         $first_name = MyFakeInfo::GetFirstName($sex);        
         $last_name = MyFakeInfo::GetLastName();
-        //$last_name = $faker->lastName();
         $date_of_birth= MyFakeInfo::GetRandomDate(self::$MinAge, self::$MaxAge);
         $title = $b_gender == 1 ? $faker->titleFemale() : $faker->titleMale();
-        $username = self::GenerateUserName($first_name, $last_name, $date_of_birth, $title, $sex);
+        $location = MyFakeInfo::GetRandomLocation();
+        $username = self::GenerateUserName($first_name, $last_name, $date_of_birth, $title, $sex, $location);
         $display_name = $username . rand(0, 100000);
         $email_address = rand(0, 1) == 1 ? $display_name : ($first_name . "." . $last_name);
         $email_address .= MyFakeInfo::GetEmailDomain();
         $email_address = str_replace(" ", rand(0, 1) == 1 ? "" : ".", $email_address);
         $address_number = $faker->buildingNumber();
-        $address_street = $faker->streetName();
-        $location = MyFakeInfo::GetRandomLocation();
+        $address_street = $faker->streetName();        
         $address_city = $location['town'];
         $address_region = $location['region'];
         $postcode = $location['postcode'];
         $country = $location['country_string'];
-        //$address_city = $faker->city();
-        //$address_region = "";        
-        //$postcode = $faker->postcode();
-        //$country = $faker->country();
         $phone_number = $faker->phoneNumber();
         $this->person = new Person($first_name, $last_name, $date_of_birth,$email_address,$address_number,
             $address_street,$address_city,$address_region,$country,$title,$sex,$username, $postcode, $phone_number);
     }
-    
-    static function GenerateUserName($firstName, $LastName, $DateOfBirth, $title, $sex): string
+
+    /**
+     * @param $firstName string
+     * @param $LastName string
+     * @param $DateOfBirth DateTime
+     * @param $title string
+     * @param $sex string ('female','male')
+     * @param array $location
+     * -keys-
+     * ['postcode'] string,
+     * ['eastings'] string,
+     * ['northings'] string,
+     * ['latitude'] string,
+     * ['longitude'] string,
+     * ['town'] string,
+     * ['region'] string,
+     * ['country'] string,
+     * ['country_string'] string
+     * @return string
+     * string
+     * returns a randomly generated username with user details
+     */
+    static function GenerateUserName(string $firstName, string $LastName, DateTime $DateOfBirth, string $title, 
+                                     string $sex, array $location): string
     {
-        $validSpaces = ['.','-','_'];
-        return $firstName.'.'.$LastName.$DateOfBirth->format('y').'-'.rand(0,10000);
+        $validSpaces = ['.','-','_',''];
+        $randomSpace = $validSpaces[rand(0,count($validSpaces) -1)];
+        $animal = MyFakeInfo::GetRandomAnimal();
+        $adjective = MyFakeInfo::GetRandomAdjective();
+        $randomNumber = rand(0,1000);
+
+        switch (rand(0,2))
+        {
+            case 0:
+                $randomNumber = $DateOfBirth->format('Y');
+                break;
+            case 1:
+                $randomNumber = $DateOfBirth->format('my');
+                break;
+            case 2:
+                $randomNumber = $DateOfBirth->format('dm');
+                break;
+            default:
+
+        }
+        
+        
+        switch (rand(0,10))
+        {
+            case 0:
+                $username = $title.' '.$animal.' '.$randomNumber;
+                break;
+            case 1:
+                $username = $title.' '.$firstName.' '.$randomNumber;
+                break;
+            case 2:
+                $username = $title.' '.$LastName.' '.$randomNumber;
+                break;
+            case 3:
+                $username = $adjective.' '.$animal.' '.$randomNumber;
+                break;
+            case 4:
+                $username = $adjective.' '.$firstName.' '.$randomNumber;
+                break;
+            case 5:
+                $username = $adjective.' '.$LastName.' '.$randomNumber;
+                break;
+            case 6:
+                $username = $location['region'].' '.$firstName.' '.$randomNumber;
+                break;
+            case 7:
+                $username = $location['region'].' '.$LastName.' '.$randomNumber;
+                break;
+            case 8:
+                $username = $location['region'].' '.$animal.' '.$randomNumber;
+                break;
+            case 9:
+                $username = $location['region'].' '.$adjective.' '.$animal.' '.$randomNumber;
+                break;
+            case 10:
+                $username = $firstName.' '.$LastName.' '.$randomNumber;
+                break;
+            default:
+                $username = $title.' '.$firstName.' '.$LastName.' '.$randomNumber;
+        }
+        $validSpaces[] = ' ';
+        return self::CleanUpString($validSpaces, $username, $randomSpace);
+        
+    }
+    
+    public static function CleanUpString(array $replaceLetters, string $text, string $replaceWith)
+    {
+        foreach ($replaceLetters as $letter)
+        {
+            $text = str_replace($letter,$replaceWith,$text);
+        }
+        return $text;
+        
     }
 
     /**
-     * @param \Faker\Generator $faker
      * @return array
      */
     public function CreateDetails(): array
@@ -67,7 +153,7 @@ class AIPerson implements IPerson
             $this->person->GetAddressRegion(), $this->person->GetTile(), $this->person->GetPostCode(),
             $this->person->GetAddressCountry(), $this->person->GetPhoneNumber(), $comment, $contact_me);
     }
-
+    
     public function GetTile(): string
     {
         return $this->person.$this->GetTile();

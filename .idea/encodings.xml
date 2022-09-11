@@ -1,4 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="Encoding" addBOMForNewFiles="with BOM under Windows, with no BOM otherwise" />
+  <component name="Encoding" addBOMForNewFiles="with BOM under Windows, with no BOM otherwise">
+    <file url="file://$PROJECT_DIR$/Assets/CSVFiles/Words/English Dictionary/A.csv" charset="windows-1252" />
+    <file url="file://$PROJECT_DIR$/Assets/CSVFiles/Words/English Dictionary/B.csv" charset="windows-1252" />
+    <file url="file://$PROJECT_DIR$/Assets/CSVFiles/Words/English Dictionary/C.csv" charset="windows-1252" />
+    <file url="file://$PROJECT_DIR$/Assets/CSVFiles/Words/English Dictionary/D.csv" charset="windows-1252" />
+    <file url="file://$PROJECT_DIR$/Assets/CSVFiles/Words/English Dictionary/E.csv" charset="windows-1252" />
+    <file url="file://$PROJECT_DIR$/Assets/CSVFiles/Words/English Dictionary/I.csv" charset="windows-1252" />
+    <file url="file://$PROJECT_DIR$/Assets/CSVFiles/Words/English Dictionary/K.csv" charset="windows-1252" />
+    <file url="file://$PROJECT_DIR$/Assets/CSVFiles/Words/English Dictionary/L.csv" charset="windows-1252" />
+    <file url="file://$PROJECT_DIR$/Assets/CSVFiles/Words/English Dictionary/M.csv" charset="windows-1252" />
+    <file url="file://$PROJECT_DIR$/Assets/CSVFiles/Words/English Dictionary/N.csv" charset="windows-1252" />
+    <file url="file://$PROJECT_DIR$/Assets/CSVFiles/Words/English Dictionary/O.csv" charset="windows-1252" />
+    <file url="file://$PROJECT_DIR$/Assets/CSVFiles/Words/English Dictionary/P.csv" charset="windows-1252" />
+    <file url="file://$PROJECT_DIR$/Assets/CSVFiles/Words/English Dictionary/Q.csv" charset="windows-1252" />
+    <file url="file://$PROJECT_DIR$/Assets/CSVFiles/Words/English Dictionary/S.csv" charset="windows-1252" />
+  </component>
 </project>

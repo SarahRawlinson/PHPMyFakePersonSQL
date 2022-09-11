@@ -19,11 +19,11 @@ class DatabaseConnection
         return $textString;
     }
     
-    public function AddComment($title, $gender, $display_name, $first_name, $last_name, $address1, $address2, 
+    private function AddComment($title, $gender, $display_name, $first_name, $last_name, $address1, $address2, 
                                $address3, $postcode, $country, $email_address, $phone_number, $comment, $contact_me)
     {
         $query = $this->GetQueryFromTextFile("Assets/SQLQueries/Insert Into Comments.txt");
-        $this->Open();
+        //$this->Open();
         $result = $this->connection->prepare($query);
         try {
             $result->bind_param("sssssssssssssi",
@@ -41,15 +41,46 @@ class DatabaseConnection
                 $phone_number,
                 $comment,
                 $contact_me);
-            $result->execute();
+            $result->execute(); // Need to look at error handling duplicates
         }
         catch(PDOException $e)
         {
             echo "Error: " . $e->getMessage();
         }
         
+        //$this->Close();
+    }
+
+    public function AddComments(array $data)
+    {
+        $this->Open();
+        
+        foreach ($data as $row)
+        {
+            list($sex, $first_name, $last_name, $display_name, $email_address, $address1, $address2, $address3, $title, 
+                $postcode, $country, $phone_number, $comment, $contact_me) = $row;
+            self::AddComment
+            (
+                $title,
+                $sex,
+                $display_name,
+                $first_name,
+                $last_name,
+                $address1,
+                $address2,
+                $address3,
+                $postcode,
+                $country,
+                $email_address,
+                $phone_number,
+                $comment,
+                $contact_me
+            );
+        }
+    
         $this->Close();
     }
+    
     
     private static function CreateInstance(): DatabaseConnection
     {
