@@ -1,24 +1,2 @@
-﻿100 inserts code as 11/09/2022
-start 100%
-avg 0.0673155493206447
-Total Execution Time:0.069669032096863 mins
-Total Execution Time:0.065582231680552 mins
-Total Execution Time:0.066695384184519 mins
-
-
-100 inserts code as 11/09/2022
-singleton lists
-percent of original time 66.35%
-avg 0.044665226671431
-Total Execution Time:0.043661201000214 mins
-Total Execution Time:0.044394580523173 mins
-Total Execution Time:0.045939898490906 mins
-
-
-100 inserts code as 11/09/2022
-open and close database once
-avg 0.039152651362949
-percent of original time 58.16%
-Total Execution Time:0.038637952009837 mins
-Total Execution Time:0.038479252656301 mins
-Total Execution Time:0.040340749422709 mins
+﻿100 = 3.1807360649109 seconds
+1000 = 23.217844963074 seconds

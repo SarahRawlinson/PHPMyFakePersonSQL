@@ -18,66 +18,56 @@ class DatabaseConnection
         fclose($myFile);
         return $textString;
     }
-    
-    private function AddComment($title, $gender, $display_name, $first_name, $last_name, $address1, $address2, 
-                               $address3, $postcode, $country, $email_address, $phone_number, $comment, $contact_me)
-    {
-        $query = $this->GetQueryFromTextFile("Assets/SQLQueries/Insert Into Comments.txt");
-        //$this->Open();
-        $result = $this->connection->prepare($query);
-        try {
-            $result->bind_param("sssssssssssssi",
-                $title,
-                $gender,
-                $display_name,
-                $first_name,
-                $last_name,
-                $address1,
-                $address2,
-                $address3,
-                $postcode,
-                $country,
-                $email_address,
-                $phone_number,
-                $comment,
-                $contact_me);
-            $result->execute(); // Need to look at error handling duplicates
-        }
-        catch(PDOException $e)
-        {
-            echo "Error: " . $e->getMessage();
-        }
-        
-        //$this->Close();
-    }
+
+
+//$array = array("array", "with", "about", "2000", "values");
+//$query = "INSERT INTO table (link) VALUES (?)";
+//$stmt = $mysqli->prepare($query);
+//$stmt ->bind_param("s", $one);
+//
+//$mysqli->query("START TRANSACTION");
+//foreach ($array as $one) {
+//$stmt->execute();
+//}
+//$stmt->close();
+//$mysqli->query("COMMIT");   
+
 
     public function AddComments(array $data)
     {
         $this->Open();
-        
+        $query = $this->GetQueryFromTextFile("Assets/SQLQueries/Insert Into Comments.txt");
+        $stmt = $this->connection->prepare($query);
+        $this->connection->query("START TRANSACTION");
         foreach ($data as $row)
         {
             list($sex, $first_name, $last_name, $display_name, $email_address, $address1, $address2, $address3, $title, 
                 $postcode, $country, $phone_number, $comment, $contact_me) = $row;
-            self::AddComment
-            (
-                $title,
-                $sex,
-                $display_name,
-                $first_name,
-                $last_name,
-                $address1,
-                $address2,
-                $address3,
-                $postcode,
-                $country,
-                $email_address,
-                $phone_number,
-                $comment,
-                $contact_me
-            );
+            try {
+                $stmt->bind_param("sssssssssssssi",
+                    $title,
+                    $sex,
+                    $display_name,
+                    $first_name,
+                    $last_name,
+                    $address1,
+                    $address2,
+                    $address3,
+                    $postcode,
+                    $country,
+                    $email_address,
+                    $phone_number,
+                    $comment,
+                    $contact_me);
+                $stmt->execute(); // Need to look at error handling duplicates
+                
+            }
+            catch(PDOException $e)
+            {
+                echo "Error: " . $e->getMessage();
+            }
         }
-    
+        $this->connection->query("COMMIT");
         $this->Close();
     }
     
