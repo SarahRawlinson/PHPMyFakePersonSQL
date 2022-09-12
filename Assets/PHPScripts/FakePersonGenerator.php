@@ -2,10 +2,9 @@
 include "Assets/PHPScripts/AIPerson.php";
 class FakePersonGenerator
 {
-    public static function GenerateCommentRecord(): array
+    public static function GenerateFakePeople(): AIPerson
     {
-        $person = new AIPerson();
-        return $person->CreateDetails();
+        return new AIPerson();
     }
 
 }

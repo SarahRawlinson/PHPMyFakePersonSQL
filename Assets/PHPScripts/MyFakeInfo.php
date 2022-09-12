@@ -32,14 +32,25 @@ class MyFakeInfo
     private static ?array $postcodeSectors;
     private static ?array $postCodeUnits;
     private static int $countOfPostCodeUnits;
-    /**
-     * @var array[]|null
-     */
-    private static ?array $Animals;
+    private static ?array $animals;
     private static int $countOfAnimals;
     private static ?array $Adjectives;
     private static int $countOfAdjectives;
+    private static array $dictionary;
 
+    
+    private static array $alphabet = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 
+        'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'];
+    
+    
+    private static function CreateDictionary ()
+    {
+        foreach (self::$alphabet as $a)
+        {
+           self::$dictionary[] = CSVReader::GetWordsByLetter($a);
+        }
+    }
+    
     /**
      * @return string
      * string
@@ -47,6 +58,7 @@ class MyFakeInfo
      */
     public static Function GetEmailDomain() : string
     {
+        
         $emailDomains = self::$emailDomains ?? self::GetEmailDomains();
         $emailEmailTLDs = self::$emailEmailTLDs ?? self::GetEmailTLDs();
         return "@".$emailDomains[rand(0, self::$countOfEmailDomains)].
@@ -165,7 +177,7 @@ class MyFakeInfo
      */
     public static function GetRandomAnimal() : string
     {
-        $animals = $animals ?? self::GetAnimals();
+        $animals = self::$animals ?? self::GetAnimals();
         $i = rand(1, self::$countOfAnimals);
         $animal = $animals[$i];
         return $animal['animal_name'];        
@@ -200,7 +212,7 @@ class MyFakeInfo
     public static function GetAnimals(): ?array
     {
         $array = CSVReader::GetAnimals();
-        self::$Animals = $array;
+        self::$animals = $array;
         self::$countOfAnimals = count($array) - 1;
         return $array;
     }
@@ -286,6 +298,7 @@ class MyFakeInfo
      */
     public static function GetEmailTLDs(): ?array
     {
+        self::CreateDictionary();
         $array = CSVReader::GetEmailTLDs();
         self::$emailEmailTLDs = $array;
         self::$countOfEmailTLDs = count($array) - 1;

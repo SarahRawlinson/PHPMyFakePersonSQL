@@ -121,4 +121,19 @@ class Person implements IPerson
     {
         return $this->postcode;
     }
+
+    public function GetDisplayName()
+    {
+        return $this->GetUserName();
+    }
+
+    public function GetComment(): string
+    {
+        return "";
+    }
+
+    public function GetContactMe(): string
+    {
+        return 0;
+    }
 }

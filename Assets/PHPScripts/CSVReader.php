@@ -60,6 +60,11 @@ class CSVReader
         fclose($myFile);
         return $rows;
     }
+    
+    public static function GetWordsByLetter(string $a)
+    {
+        return self::GetCSVDataColumn("Assets/CSVFiles/Words/English Dictionary/".$a.".csv");
+    }
 
     /**
      * @return array[]|null

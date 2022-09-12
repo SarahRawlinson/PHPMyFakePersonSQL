@@ -29,7 +29,7 @@ for ($i = 0; $i < 10000; $i++)
     
     try 
     {
-        $rows[] = FakePersonGenerator::GenerateCommentRecord();
+        $rows[] = FakePersonGenerator::GenerateFakePeople();
     }
     catch(PDOException $e) 
     {

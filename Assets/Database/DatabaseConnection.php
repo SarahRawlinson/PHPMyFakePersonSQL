@@ -22,30 +22,59 @@ class DatabaseConnection
 
     public function AddComments(array $data)
     {
+        $displayNames = $this->ReturnQueryResult('Select display_name from comments', 'display_name');
+        //print_r($displayNames);
         $this->Open();
         $query = $this->GetQueryFromTextFile("Assets/SQLQueries/Insert Into Comments.txt");
         $stmt = $this->connection->prepare($query);
         $this->connection->query("START TRANSACTION");
         foreach ($data as $row)
         {
-            list($sex, $first_name, $last_name, $display_name, $email_address, $address1, $address2, $address3, $title, 
-                $postcode, $country, $phone_number, $comment, $contact_me) = $row;
+            //print_r($row);
+            $contact = $row;
+            if($contact instanceof IPerson) {
+                //DO something
+            } else {
+                print_r($contact);
+                throw new Exception('$contact is not of type IPerson');
+            }
+            
+            $username = $contact->GetUserName();
+            while (in_array($username, $displayNames))
+            {
+                $username = $contact->GetDisplayName();
+            }
+            $displayNames[] = $username;
             try {
+
+                $title = $contact->GetTile();
+                $gender = $contact->GetGender();
+                $firstName = $contact->GetFirstName();
+                $lastname = $contact->GetLastName();
+                $address1 = $contact->GetAddressNumber()." ".$contact->GetAddressStreetName();
+                $address2 = $contact->GetAddressCity();
+                $address3 = $contact->GetAddressRegion();
+                $address4 = $contact->GetPostCode();
+                $address5 = $contact->GetAddressCountry();
+                $email = $contact->GetEmail();
+                $phone = $contact->GetPhoneNumber();
+                $comment = $contact->GetComment();
+                $contactyn = $contact->GetContactMe();
                 $stmt->bind_param("sssssssssssssi",
                     $title,
-                    $sex,
-                    $display_name,
-                    $first_name,
-                    $last_name,
+                    $gender,
+                    $username,
+                    $firstName,
+                    $lastname,
                     $address1,
                     $address2,
                     $address3,
-                    $postcode,
-                    $country,
-                    $email_address,
-                    $phone_number,
+                    $address4,
+                    $address5,
+                    $email,
+                    $phone,
                     $comment,
-                    $contact_me);
+                    $contactyn);
                 $stmt->execute(); // Need to look at error handling duplicates
                 
             }

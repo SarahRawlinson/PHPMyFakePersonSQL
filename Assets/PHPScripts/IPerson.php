@@ -18,4 +18,8 @@ interface IPerson
     public function GetUserName() : string;
     public function GetPhoneNumber() : string;
     public function GetPostCode() : string;
+    public function GetComment() : string;
+    public function GetContactMe() : string;
+
+    public function GetDisplayName();
 }

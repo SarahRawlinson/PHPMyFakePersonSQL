@@ -7,6 +7,7 @@ class AIPerson implements IPerson
 {
     static int $MaxAge = 100;
     static int $MinAge = 10;
+    private array $location;
     private IPerson $person;
 
     private \Faker\Generator $faker;
@@ -25,6 +26,7 @@ class AIPerson implements IPerson
         $date_of_birth= MyFakeInfo::GetRandomDate(self::$MinAge, self::$MaxAge);
         $title = $b_gender == 1 ? $faker->titleFemale() : $faker->titleMale();
         $location = MyFakeInfo::GetRandomLocation();
+        $this->location = $location;
         $username = self::GenerateUserName($first_name, $last_name, $date_of_birth, $title, $sex, $location);
         $display_name = $username . rand(0, 100000);
         $email_address = rand(0, 1) == 1 ? $display_name : ($first_name . "." . $last_name);
@@ -140,78 +142,74 @@ class AIPerson implements IPerson
         
     }
 
-    /**
-     * @return array
-     */
-    public function CreateDetails(): array
-    {
-        $comment = $this->faker->text(). "\n";
-        $contact_me = rand(0, 1);
-        return array($this->person->GetGender(), $this->person->GetFirstName(), $this->person->GetLastName(), 
-            $this->person->GetUserName(), $this->person->GetEmail(), 
-            $this->person->GetAddressNumber().' '.$this->person->GetAddressStreetName(), $this->person->GetAddressCity(),
-            $this->person->GetAddressRegion(), $this->person->GetTile(), $this->person->GetPostCode(),
-            $this->person->GetAddressCountry(), $this->person->GetPhoneNumber(), $comment, $contact_me);
-    }
+//    /**
+//     * @return array
+//     */
+//    public function CreateDetails(): array
+//    {
+//        $comment = $this->faker->text(). "\n";
+//        $contact_me = rand(0, 1);
+//        return array(&$this, $comment, $contact_me);
+//    }
     
     public function GetTile(): string
     {
-        return $this->person.$this->GetTile();
+        return $this->person->GetTile();
     }
 
     public function GetName(): string
     {
-        return $this->person.$this->GetName();
+        return $this->person->GetName();
     }
 
     public function GetFirstName(): string
     {
-        return $this->person.$this->GetFirstName();
+        return $this->person->GetFirstName();
     }
 
     public function GetLastName(): string
     {
-        return $this->person.$this->GetLastName();
+        return $this->person->GetLastName();
     }
 
     public function GetEmail(): string
     {
-        return $this->person.$this->GetEmail();
+        return $this->person->GetEmail();
     }
 
     public function GetAddressNumber(): string
     {
-        return $this->person.$this->GetAddressNumber();
+        return $this->person->GetAddressNumber();
     }
 
     public function GetAddressStreetName(): string
     {
-        return $this->person.$this->GetAddressStreetName();
+        return $this->person->GetAddressStreetName();
     }
 
     public function GetAddressCity(): string
     {
-        return $this->person.$this->GetAddressCity();
+        return $this->person->GetAddressCity();
     }
 
     public function GetAddressRegion(): string
     {
-        return $this->person.$this->GetAddressRegion();
+        return $this->person->GetAddressRegion();
     }
 
     public function GetAddressCountry(): string
     {
-        return $this->person.$this->GetAddressCountry();
+        return $this->person->GetAddressCountry();
     }
 
     public function GetAge(): int
     {
-        return $this->person.$this->GetAge();
+        return $this->person->GetAge();
     }
 
     public function GetDateOfBirth(): DateTime
     {
-        return $this->person.$this->GetDateOfBirth();
+        return $this->person->GetDateOfBirth();
     }
 
     public function GetGender(): string
@@ -234,5 +232,21 @@ class AIPerson implements IPerson
     public function GetPostCode(): string
     {
         return $this->person->GetPostCode();
+    }
+
+    public function GetDisplayName()
+    {
+        return self::GenerateUserName($this->GetFirstName(),$this->GetLastName(), $this->GetDateOfBirth(),
+            $this->GetTile(), $this->GetGender(),$this->location);
+    }
+
+    public function GetComment(): string
+    {
+        return $this->faker->text(). "\n";
+    }
+
+    public function GetContactMe(): string
+    {
+        return rand(0, 1);
     }
 }
