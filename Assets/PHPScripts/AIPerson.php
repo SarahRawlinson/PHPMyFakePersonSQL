@@ -39,7 +39,7 @@ class AIPerson implements IPerson
         $postcode = $location['postcode'];
         $country = $location['country_string'];
         $phone_number = $faker->phoneNumber();
-        $this->person = new Person($first_name, $last_name, $date_of_birth,$email_address,$address_number,
+        $this->person = new Person($first_name, $last_name, $date_of_birth,$email_address,$address_number, 
             $address_street,$address_city,$address_region,$country,$title,$sex,$username, $postcode, $phone_number);
     }
 
@@ -242,7 +242,8 @@ class AIPerson implements IPerson
 
     public function GetComment(): string
     {
-        return $this->faker->text(). "\n";
+        //return $this->faker->text(). "\n";
+        return MyFakeInfo::GetRandomSentence();
     }
 
     public function GetContactMe(): string

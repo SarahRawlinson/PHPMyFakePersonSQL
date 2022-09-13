@@ -80,7 +80,8 @@ class CSVReader
      */
     public static function GetLocations(): ?array
     {
-        return self::$locations = self::$locations ?? self::GetCSVDataCells("Assets/CSVFiles/Locations/UKPostcodes.csv");
+        return self::$locations = self::$locations ?? 
+            self::GetCSVDataCells("Assets/CSVFiles/Locations/UKPostcodes.csv");
     }
 
     /**
@@ -116,7 +117,8 @@ class CSVReader
      */
     public static function GetAdjectives(): ?array
     {
-        return self::$Adjectives = self::$Adjectives ?? self::GetCSVDataColumn("Assets/CSVFiles/Words/AdjectiveWords.csv");
+        return self::$Adjectives = self::$Adjectives ?? 
+            self::GetCSVDataColumn("Assets/CSVFiles/Words/AdjectiveWords.csv");
     }
 
     /**
@@ -126,7 +128,8 @@ class CSVReader
      */
     public static function GetInterjections(): ?array
     {
-        return self::$Interjections = self::$Interjections ?? self::GetCSVDataCells("Assets/CSVFiles/Words/interjections-in-english.csv");
+        return self::$Interjections = self::$Interjections ?? 
+            self::GetCSVDataCells("Assets/CSVFiles/Words/interjections-in-english.csv");
     }
 
     /**
@@ -135,7 +138,8 @@ class CSVReader
      */
     public static function GetConjunctions(): ?array
     {
-        return self::$Conjunctions = self::$Conjunctions ?? self::GetCSVDataColumn("Assets/CSVFiles/Words/Conjunctions.csv");
+        return self::$Conjunctions = self::$Conjunctions ?? 
+            self::GetCSVDataColumn("Assets/CSVFiles/Words/Conjunctions.csv");
     }
 
     /**
@@ -154,7 +158,8 @@ class CSVReader
      */
     public static function GetPrepositions(): ?array
     {
-        return self::$Prepositions = self::$Prepositions ??  self::GetCSVDataCells("Assets/CSVFiles/Words/prepositions-in-english.csv");
+        return self::$Prepositions = self::$Prepositions ??  
+            self::GetCSVDataCells("Assets/CSVFiles/Words/prepositions-in-english.csv");
     }
 
     /**
@@ -165,7 +170,8 @@ class CSVReader
      */
     public static function GetPronouns(): ?array
     {
-        return self::$Pronouns = self::$Pronouns ??  self::GetCSVDataCells("Assets/CSVFiles/Words/pronouns-in-english.csv");
+        return self::$Pronouns = self::$Pronouns ??  
+            self::GetCSVDataCells("Assets/CSVFiles/Words/pronouns-in-english.csv");
     }
 
 
@@ -175,7 +181,8 @@ class CSVReader
      */
     public static function GetPostcodeSectors(): ?array
     {
-        return self::$PostcodeSectors = self::$PostcodeSectors ??  self::GetCSVDataColumn("Assets/CSVFiles/Locations/UKPostcodeSectors.csv");
+        return self::$PostcodeSectors = self::$PostcodeSectors ??  
+            self::GetCSVDataColumn("Assets/CSVFiles/Locations/UKPostcodeSectors.csv");
     }
 
     /**
@@ -184,7 +191,8 @@ class CSVReader
      */
     public static function GetPostcodeUnits(): ?array
     {
-        return self::$PostcodeUnits = self::$PostcodeUnits ??  self::GetCSVDataColumn("Assets/CSVFiles/Locations/UKPostcodeUnits.csv");
+        return self::$PostcodeUnits = self::$PostcodeUnits ??  
+            self::GetCSVDataColumn("Assets/CSVFiles/Locations/UKPostcodeUnits.csv");
     }
 
     /**
@@ -193,7 +201,8 @@ class CSVReader
      */
     public static function GetEmailDomains(): ?array
     {
-        return self::$EmailDomains = self::$EmailDomains ??  self::GetCSVDataColumn("Assets/CSVFiles/Email/EmailDomains.csv");
+        return self::$EmailDomains = self::$EmailDomains ?? 
+            self::GetCSVDataColumn("Assets/CSVFiles/Email/EmailDomains.csv");
     }
 
     /**
@@ -202,7 +211,8 @@ class CSVReader
      */
     public static function GetEmailTLDs(): ?array
     {
-        return self::$GetEmailTLDs = self::$GetEmailTLDs ??  self::GetCSVDataColumn("Assets/CSVFiles/Email/EmailTopLevelDomain.csv");
+        return self::$GetEmailTLDs = self::$GetEmailTLDs ?? 
+            self::GetCSVDataColumn("Assets/CSVFiles/Email/EmailTopLevelDomain.csv");
     }
 }
 

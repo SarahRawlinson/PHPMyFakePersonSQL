@@ -1,6 +1,7 @@
 <?php
 include "ReadTextFiles.php";
 include "CSVReader.php";
+require "DictionaryKeys.php";
 
 //Notes:
 //Postcode source = https://github.com/radiac/UK-Postcodes/blob/master/postcodes.csv
@@ -37,18 +38,89 @@ class MyFakeInfo
     private static ?array $Adjectives;
     private static int $countOfAdjectives;
     private static array $dictionary;
+    private static array $dictionaryKeys = [];
 
     
     private static array $alphabet = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 
         'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'];
     
     
-    private static function CreateDictionary ()
+    private static function CreateDictionary()
     {
         foreach (self::$alphabet as $a)
         {
-           self::$dictionary[] = CSVReader::GetWordsByLetter($a);
+            $letterDictionary = CSVReader::GetWordsByLetter($a);
+            
+           // self::$dictionaryKeys[] = $a;
+            
+            foreach ($letterDictionary as $word)
+            {
+                $openBracket = strpos($word, '(', 0);
+                $closeBracket = strpos($word, ')', 0);
+                $justWord = substr($word,0,$openBracket-1);
+                $key = substr($word, $openBracket + 1, ($closeBracket - $openBracket) - 1);
+                
+                if (!empty($key)) 
+                {
+                    $split = explode(" ",$key);
+                    foreach ($split as $k)
+                    {
+                        $k = trim($k,' ,/,\,\',(,),-,.,&,;');
+                        $k = str_replace([',' ,'/','',"'",'(',')','-','.','&',';'],'', $k);
+                        if (!in_array($k,self::$dictionaryKeys) && !empty($k))
+                        {
+                            self::$dictionaryKeys[] = $k;
+                        }
+                        if (!empty($k)) self::$dictionary['key'][$k][] = $justWord;
+                    }
+                }
+                
+                self::$dictionary['start_letter'][$a][] = $justWord;
+            }
+            
+            
         }
+
+//        foreach (self::$dictionaryKeys as $v)
+//        {
+//            echo "key ".$v." - ".count(self::$dictionary['key'][$v])."\n";
+//        }
+        //print_r(self::$dictionaryKeys);
+        //print_r(self::$dictionary['a.']);
+    }
+    
+    public static function GetWordPattern(string $pattern)
+    {
+        $letters = explode(', ',$pattern);
+        $newString = "";
+        foreach ($letters as $letter)
+        {
+            if (empty($letter) || is_null($letter))
+            {
+                continue;
+            }
+            $arr = self::$dictionary['key'][$letter];
+            //
+            //echo count($arr)."\n";
+            $newString .= $arr[rand(0, count($arr)-1)]." ";
+        }
+        
+        return trim($newString);
+    }
+    
+    public static function GetRandomSentence(): string
+    {
+        $pattern = DictionaryKeys::noun.", ";
+        $pattern .= DictionaryKeys::conj.", ";
+        $pattern .= DictionaryKeys::prep.", ";
+        $pattern .= DictionaryKeys::imp.", ";
+        $pattern .= DictionaryKeys::i.", ";
+        $pattern .= DictionaryKeys::pr.", ";
+        $pattern .= DictionaryKeys::t.", ";
+        $pattern .= DictionaryKeys::vb;
+        $sentence = self::GetWordPattern($pattern);
+        echo $sentence."\n";
+        return $sentence;
     }
     
     /**
