@@ -110,6 +110,10 @@ class CSVReader
         return self::$Animals = self::$Animals ??  self::GetCSVDataCells("Assets/CSVFiles/Animals/zoo.csv");
     }
 
+    public static function GetAnimalNames(): ?array
+    {
+        return self::GetCSVDataColumn("Assets/CSVFiles/Animals/zoo.csv");
+    }
 
     /**
      * @return array|null
@@ -128,8 +132,9 @@ class CSVReader
      */
     public static function GetInterjections(): ?array
     {
+        //could be cells
         return self::$Interjections = self::$Interjections ?? 
-            self::GetCSVDataCells("Assets/CSVFiles/Words/interjections-in-english.csv");
+            self::GetCSVDataColumn("Assets/CSVFiles/Words/interjections-in-english.csv");
     }
 
     /**
@@ -158,8 +163,9 @@ class CSVReader
      */
     public static function GetPrepositions(): ?array
     {
+        //could be cells
         return self::$Prepositions = self::$Prepositions ??  
-            self::GetCSVDataCells("Assets/CSVFiles/Words/prepositions-in-english.csv");
+            self::GetCSVDataColumn("Assets/CSVFiles/Words/prepositions-in-english.csv");
     }
 
     /**

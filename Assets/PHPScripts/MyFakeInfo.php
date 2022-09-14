@@ -58,8 +58,7 @@ class MyFakeInfo
                 $openBracket = strpos($word, '(', 0);
                 $closeBracket = strpos($word, ')', 0);
                 $justWord = substr($word,0,$openBracket-1);
-                $key = substr($word, $openBracket + 1, ($closeBracket - $openBracket) - 1);
-                
+                $key = substr($word, $openBracket + 1, ($closeBracket - $openBracket) - 1);                
                 if (!empty($key)) 
                 {
                     $split = explode(" ",$key);
@@ -76,11 +75,25 @@ class MyFakeInfo
                 }
                 
                 self::$dictionary['start_letter'][$a][] = $justWord;
-            }
-            
-            
+            }           
         }
 
+        //echo "letters loaded";
+        self::$dictionary['key'][DictionaryKeys::subj] = CSVReader::GetAnimalNames();
+        self::$dictionary['key'][DictionaryKeys::subj] = CSVReader::GetPronouns();
+        self::$dictionary['key'][DictionaryKeys::subj] = self::GetFemaleNames();
+        self::$dictionary['key'][DictionaryKeys::subj] = self::GetMaleNames();
+        //echo "subjects loaded";
+        self::$dictionary['key'][DictionaryKeys::noun] = CSVReader::GetNouns();
+        //echo "noun loaded";
+        self::$dictionary['key'][DictionaryKeys::interj] = CSVReader::GetInterjections();
+        //echo "interjections loaded";
+        self::$dictionary['key'][DictionaryKeys::conj] = CSVReader::GetConjunctions();
+        //echo "conjunctions loaded";
+        self::$dictionary['key'][DictionaryKeys::adj] = CSVReader::GetAdjectives();
+        //echo "adjectives loaded";
+        self::$dictionary['key'][DictionaryKeys::prep] = CSVReader::GetPrepositions();
+        //echo "prepositions loaded";
 //        foreach (self::$dictionaryKeys as $v)
 //        {
 //            echo "key ".$v." - ".count(self::$dictionary['key'][$v])."\n";
@@ -95,30 +108,42 @@ class MyFakeInfo
         $newString = "";
         foreach ($letters as $letter)
         {
-            if (empty($letter) || is_null($letter))
+            if (in_array($letter, self::$dictionaryKeys))
             {
-                continue;
+                if (empty($letter) || is_null($letter))
+                {
+                    continue;
+                }
+                $arr = self::$dictionary['key'][$letter];
+                //
+                //echo count($arr)."\n";
+                $newString .= $arr[rand(0, count($arr)-1)]." ";
+                if (!isset($newString) || is_null($newString))
+                {
+                    $newString .= $letter;
+                }
             }
-            $arr = self::$dictionary['key'][$letter];
-            //
-            //echo count($arr)."\n";
-            $newString .= $arr[rand(0, count($arr)-1)]." ";
+            else
+            {
+                $newString .= $letter;
+            }
         }
         
-        return trim($newString);
+        return trim($newString, " ");
     }
     
     public static function GetRandomSentence(): string
     {
-        $pattern = DictionaryKeys::noun.", ";
-        $pattern .= DictionaryKeys::conj.", ";
-        $pattern .= DictionaryKeys::prep.", ";
-        $pattern .= DictionaryKeys::imp.", ";
-        $pattern .= DictionaryKeys::i.", ";
-        $pattern .= DictionaryKeys::pr.", ";
-        $pattern .= DictionaryKeys::t.", ";
-        $pattern .= DictionaryKeys::vb;
-        $sentence = self::GetWordPattern($pattern);
+        $sentence = "";
+        $val = rand(5, 15);
+        for ($i = 0; $i < $val; $i++)
+        {
+            $conjs = self::$dictionary['key'][DictionaryKeys::conj];
+            $conj = rand(0,1)==0?".":", ".$conjs[rand(0, count($conjs)-1)];
+            $pattern = self::getPattern();
+            $sentence .= self::GetWordPattern($pattern)."$conj ";
+        }
+        
         echo $sentence."\n";
         return $sentence;
     }
@@ -272,6 +297,10 @@ class MyFakeInfo
      */
     public static function GetAdjectives(): ?array
     {
+        if (isset(self::$Adjectives))
+        {
+            return self::$Adjectives;
+        }
         $array = CSVReader::GetAdjectives();
         self::$Adjectives = $array;
         self::$countOfAdjectives = count($array) - 1;
@@ -283,6 +312,10 @@ class MyFakeInfo
      */
     public static function GetAnimals(): ?array
     {
+        if (isset(self::$animals))
+        {
+            return self::$animals;
+        }
         $array = CSVReader::GetAnimals();
         self::$animals = $array;
         self::$countOfAnimals = count($array) - 1;
@@ -294,6 +327,10 @@ class MyFakeInfo
      */
     public static function GetPostcodeUnits(): ?array
     {
+        if (isset(self::$postCodeUnits))
+        {
+            return self::$postCodeUnits;
+        }
         $array = CSVReader::GetPostcodeUnits();
         self::$postCodeUnits = $array;
         self::$countOfPostCodeUnits = count($array) - 1;
@@ -305,6 +342,10 @@ class MyFakeInfo
      */
     public static function GetPostcodeSectors(): ?array
     {
+        if (isset(self::$postcodeSectors))
+        {
+            return self::$postcodeSectors;
+        }
         $array = CSVReader::GetPostcodeSectors();
         self::$postcodeSectors = $array;
         return $array;
@@ -315,6 +356,10 @@ class MyFakeInfo
      */
     public static function GetEmailDomains(): ?array
     {
+        if (isset(self::$emailDomains))
+        {
+            return self::$emailDomains;
+        }
         $array = CSVReader::GetEmailDomains();
         self::$emailDomains = $array;
         self::$countOfEmailDomains = count($array) - 1;
@@ -326,6 +371,10 @@ class MyFakeInfo
      */
     public static function GetFemaleNames(): ?array
     {
+        if (isset(self::$femaleNames))
+        {
+            return self::$femaleNames;
+        }
         $array = ReadTextFiles::GetFemaleNames();
         self::$femaleNames = $array;
         self::$countOfFemaleNames = count($array) - 1;
@@ -337,6 +386,10 @@ class MyFakeInfo
      */
     public static function GetMaleNames(): ?array
     {
+        if (isset(self::$maleNames))
+        {
+            return self::$maleNames;
+        }
         $array = ReadTextFiles::GetMaleNames();
         self::$maleNames = $array;
         self::$countOfMaleNames = count($array) - 1;
@@ -348,6 +401,10 @@ class MyFakeInfo
      */
     public static function GetLastNames(): ?array
     {
+        if (isset(self::$lastNames))
+        {
+            return self::$lastNames;
+        }
         $array = ReadTextFiles::GetLastNames();
         self::$lastNames = $array;
         self::$countOfLastNames = count($array) - 1;
@@ -359,6 +416,10 @@ class MyFakeInfo
      */
     public static function GetLocations(): ?array
     {
+        if (isset(self::$locations))
+        {
+            return self::$locations;
+        }
         $array = CSVReader::GetLocations();
         self::$locations = $array;
         self::$countOfLocations = count($array) - 1;
@@ -370,11 +431,74 @@ class MyFakeInfo
      */
     public static function GetEmailTLDs(): ?array
     {
+        if (isset(self::$emailEmailTLDs))
+        {
+            return self::$emailEmailTLDs;
+        }
         self::CreateDictionary();
         $array = CSVReader::GetEmailTLDs();
         self::$emailEmailTLDs = $array;
         self::$countOfEmailTLDs = count($array) - 1;
         return $array;
+    }
+
+    /**
+     * @param string $pattern
+     * @return string
+     */
+    public static function getPattern(): string
+    {
+        $pattern = "";
+        switch (rand(1, 8)) {
+            case 1:
+                $pattern .= DictionaryKeys::subj . ", ";
+                $pattern .= DictionaryKeys::vb . ", ";
+                break;
+            case 2:
+                $pattern .= DictionaryKeys::subj . ", ";
+                $pattern .= DictionaryKeys::vb . ", ";
+                $pattern .= DictionaryKeys::obj . ", ";
+                break;
+            case 3:
+                $pattern .= DictionaryKeys::subj . ", ";
+                $pattern .= DictionaryKeys::vb . ", ";
+                $pattern .= DictionaryKeys::adj . ", ";
+                break;
+            case 4:
+                $pattern .= DictionaryKeys::subj . ", ";
+                $pattern .= DictionaryKeys::vb . ", ";
+                $pattern .= DictionaryKeys::adv . ", ";
+                break;
+            case 5:
+                $pattern .= DictionaryKeys::subj . ", ";
+                $pattern .= DictionaryKeys::vb . ", ";
+                $pattern .= DictionaryKeys::noun . ", ";
+                break;
+            case 6:
+                $pattern .= DictionaryKeys::subj . ", ";
+                $pattern .= DictionaryKeys::vb . ", ";
+                $pattern .= DictionaryKeys::super . ", ";
+                break;
+            case 7:
+                $pattern .= DictionaryKeys::subj . ", ";
+                $pattern .= DictionaryKeys::vb . ", ";
+                $pattern .= DictionaryKeys::interj . ", ";
+                break;
+            case 8:
+                $pattern .= DictionaryKeys::subj . ", ";
+                $pattern .= DictionaryKeys::vb . ", ";
+                $pattern .= DictionaryKeys::pr . ", ";
+                $pattern .= DictionaryKeys::obj . ", ";
+                break;
+            case 9:
+                $pattern .= DictionaryKeys::prep . ", ";
+                $pattern .= DictionaryKeys::vb . ", ";
+                $pattern .= DictionaryKeys::interj . ", ";
+                break;
+            default:
+                break;
+        }
+        return $pattern;
     }
 
 }
